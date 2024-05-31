@@ -2,7 +2,7 @@ FROM nginxinc/nginx-unprivileged:1-alpine
 LABEL maintainer="londonappdeveloper.com"
 
 COPY ./default.conf.tpl /etc/nginx/default.conf.tpl
-COPY ./uwsgi_params /etc/nginx/uwsgi_params
+COPY ./gunicorn_headers /etc/nginx/gunicorn_headers
 COPY ./run.sh /run.sh
 
 ENV LISTEN_PORT=8000
@@ -19,9 +19,9 @@ RUN mkdir -p /vol/static && \
     chown nginx:nginx /etc/nginx/conf.d/default.conf && \
     chmod +x /run.sh
 
+USER nginx
+
 VOLUME /vol/static
 VOLUME /vol/media
-
-USER nginx
 
 CMD ["/run.sh"]
